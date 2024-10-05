@@ -1,5 +1,6 @@
 import dspy
 import os
+import torch
 from pyt2s.services import stream_elements
 
 QUESTION = "How did Eliud Kipchoge break the sub-2 hour barrier in a full marathon distance? What were the training methods he used to achieve his groundbreaking feat?"
@@ -40,5 +41,7 @@ if __name__ == '__main__':
 
     # TTS
     data = stream_elements.requestTTS(script.podcast_script)
-    with open('/Users/maheshsrinivas/LLM-Work/notebook-lm/output/eliud.mp3', '+wb') as file:
+    with open('/home/mahesh/LLM/notebook-lm/LLM2/output/eliud.mp3', '+wb') as file:
         file.write(data)
+
+    print(f"GPU: {torch.cuda.is_available()}")

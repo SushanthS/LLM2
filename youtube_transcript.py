@@ -4,13 +4,15 @@ from urllib.parse import urlparse, parse_qs
 import pandas as pd
 import dspy
 import os
+import torch
 
 # enter key here
 OPENAI_API_KEY=""
 os.environ["OPENAI_API_KEY"] = OPENAI_API_KEY
 from dspy.datasets.gsm8k import GSM8K, gsm8k_metric
 
-FILE_PATH = "/home/mahesh/LLM/notebook-lm/data"
+FILE_PATH = "/home/mahesh/LLM/notebook-lm/LLM2/data"
+OUTPUT_FILE_PATH = "/home/mahesh/LLM/notebook-lm/LLM2/output"
 YOUTUBE_URL = "https://www.youtube.com/watch?v=ZAf7FXih-Jc"
 
 
@@ -90,8 +92,9 @@ def summarize_transcript(transcript_path):
     return final_summary
 
 if __name__ == '__main__':
+    print(f"GPU: {torch.cuda.is_available()}")
     transcript = get_transcript(YOUTUBE_URL)
-    write_string_to_file(transcript, FILE_PATH) # transcript file
+    write_string_to_file(transcript, f"{OUTPUT_FILE_PATH}/transcript.txt") # transcript file
 
 # Set up the LM.
     turbo = dspy.OpenAI(model='gpt-3.5-turbo-instruct', max_tokens=250)
@@ -106,17 +109,15 @@ if __name__ == '__main__':
     print(f"Transcript length: {len(transcript)}")
     print("****************************************")
 
+    print("************SUMMARY*********************")
+    print(response.summary)
+    print("\n")
+    print(f"Summary length: {len(response.summary)}")
+
     print("***************RATIONALE***************")
     print(response.rationale)
     print("\n")
     print(f"Rationale length: {len(response.rationale)}")
     print("****************************************")
 
-    print("***************SUMMARY***************")
-    print(response.summary)
-    print("\n")
-    print(f"Summary length: {len(response.summary)}")
-    print("****************************************")
-
-
-
+    print(f"GPU: {torch.cuda.is_available()}")

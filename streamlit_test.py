@@ -1,29 +1,71 @@
 import streamlit as st
 import streamlit_lottie
 import streamlit_scrollable_textbox as stx
+from youtube_transcript_api import YouTubeTranscriptApi
+import dspy
 
 import pathlib
 import requests
 import json
 
+# mxs - looks like utils is a folder that is not available here.
 from utils import *
+
+
+def extract_video_id(youtube_url):
+    # Parse the video URL and extract the video ID
+    parsed_url = urlparse(youtube_url)
+    video_id = parse_qs(parsed_url.query).get('v')
+    if video_id:
+        return video_id[0]
+    else:
+        raise ValueError("Invalid YouTube URL or missing video ID")
+
 
 def get_transcript(yt_url):
     """
     Function to get the transcripts of the Youtube Video
     """
-    return "This is a test transcript"
+    try:
+        # Extract the video ID from the YouTube URL
+        video_id = extract_video_id(yt_url)
+
+        # Fetch the transcript using the video ID
+        transcript_list = YouTubeTranscriptApi.get_transcript(video_id)
+
+        # Combine the transcript into a single string
+        transcript_text = ' '.join([entry['text'] for entry in transcript_list])
+
+        return transcript_text
+    except Exception as e:
+        return str(e)
+
+def write_string_to_file(text_string, file_path):
+    try:
+        # Open the file in write mode ('w')
+        with open(file_path, 'w') as file:
+            # Write the text string to the file
+            file.write(text_string)
+        print(f"Text successfully written to {file_path}")
+    except Exception as e:
+        print(f"An error occurred: {e}")
+
 
 def create_summary(transcript):
     """
     Function to generate a summary of the transcript
     """
-    return "This is a test summary"
+    summarize = dspy.ChainOfThought('document -> summary')
+    response = summarize(document=transcript)
+
+    return response.summary
 
 def create_podcast_file(transcript):
     """
     Function to return  podcast mp3 file from the transcript
     """
+
+
     return "/home/vas/Documents/AIAudioTranscriber/podcast.mp3"
 
 
