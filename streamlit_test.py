@@ -1,5 +1,5 @@
 import streamlit as st
-import streamlit_lottie
+#import streamlit_lottie
 import streamlit_scrollable_textbox as stx
 from youtube_transcript_api import YouTubeTranscriptApi
 import dspy
@@ -7,9 +7,18 @@ import dspy
 import pathlib
 import requests
 import json
+import os
+from urllib.parse import urlparse, parse_qs
+import torch
+from pyt2s.services import stream_elements
+
+# enter key here
+OPENAI_API_KEY=""
+os.environ["OPENAI_API_KEY"] = OPENAI_API_KEY
+
 
 # mxs - looks like utils is a folder that is not available here.
-from utils import *
+#from utils import *
 
 
 def extract_video_id(youtube_url):
@@ -55,18 +64,45 @@ def create_summary(transcript):
     """
     Function to generate a summary of the transcript
     """
+    turbo = dspy.OpenAI(model='gpt-3.5-turbo-instruct', max_tokens=250)
+    dspy.settings.configure(lm=turbo)
+
     summarize = dspy.ChainOfThought('document -> summary')
     response = summarize(document=transcript)
 
     return response.summary
 
+class QA2(dspy.Signature):
+    """Given an essay, generate a podcast script on the answer"""
+    essay = dspy.InputField(desc="User's essay")
+    podcast_script = dspy.OutputField(desc="A podcast script based on the given essay. There are two hosts in the podcast - Ray and Tom.")
+
+
+
 def create_podcast_file(transcript):
     """
     Function to return  podcast mp3 file from the transcript
     """
+    # Set up the LM.
+    turbo = dspy.OpenAI(model='gpt-3.5-turbo-instruct', max_tokens=250)
+    dspy.settings.configure(lm=turbo)
 
+    predict2 = dspy.Predict(QA2)
+    script = predict2(essay=transcript)
+    print(script.podcast_script)
+    print(len(script.podcast_script))
+    print("************************************************")
+#    turbo.inspect_history(n=2)
 
-    return "/home/vas/Documents/AIAudioTranscriber/podcast.mp3"
+    # TTS
+    data = stream_elements.requestTTS(script.podcast_script)
+    mp3_file = f'/Users/maheshsrinivas/LLM-Work/nlm/LLM2/output/pdc1.mp3'
+    with open(mp3_file, '+wb') as file:
+        file.write(data)
+
+    print(f"GPU: {torch.cuda.is_available()}")
+
+    return mp3_file
 
 
 def main():
@@ -85,7 +121,7 @@ def main():
         )
     transcript = ""
     summary = ""
-    podcast_mp3_file = "/home/vas/Documents/AIAudioTranscriber/podcast.mp3"
+    podcast_mp3_file = "/Users/maheshsrinivas/LLM-Work/nlm/LLM2/output/podcast.mp3"
     st.title("AI Audio Transcriber")
     #Create a Input Form Component
     input_mode = st.sidebar.selectbox(
@@ -108,6 +144,7 @@ def main():
             if yt_url:
                 transcript = get_transcript(yt_url)
                 summary = create_summary(transcript)
+                video_id = extract_video_id(yt_url)
                 podcast_mp3_file = create_podcast_file(transcript)
             else:
                 st.warning("Please🙏 enter a valid URL for Youtube video")

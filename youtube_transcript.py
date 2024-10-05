@@ -11,8 +11,8 @@ OPENAI_API_KEY=""
 os.environ["OPENAI_API_KEY"] = OPENAI_API_KEY
 from dspy.datasets.gsm8k import GSM8K, gsm8k_metric
 
-FILE_PATH = "/home/mahesh/LLM/notebook-lm/LLM2/data"
-OUTPUT_FILE_PATH = "/home/mahesh/LLM/notebook-lm/LLM2/output"
+FILE_PATH = "/Users/maheshsrinivas/LLM-Work/nlm/LLM2/data"
+OUTPUT_FILE_PATH = "/Users/maheshsrinivas/LLM-Work/nlm/LLM2/output"
 YOUTUBE_URL = "https://www.youtube.com/watch?v=ZAf7FXih-Jc"
 
 

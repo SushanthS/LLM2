@@ -32,6 +32,7 @@ if __name__ == '__main__':
     print(prediction.answer)
     print(len(prediction.answer))
     print("************************************************")
+
     predict2 = dspy.Predict(QA2)
     script = predict2(essay=prediction.answer)
     print(script.podcast_script)
@@ -41,7 +42,7 @@ if __name__ == '__main__':
 
     # TTS
     data = stream_elements.requestTTS(script.podcast_script)
-    with open('/home/mahesh/LLM/notebook-lm/LLM2/output/eliud.mp3', '+wb') as file:
+    with open('/Users/maheshsrinivas/LLM-Work/nlm/LLM2/output/eliud.mp3', '+wb') as file:
         file.write(data)
 
     print(f"GPU: {torch.cuda.is_available()}")
