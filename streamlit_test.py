@@ -12,7 +12,7 @@ from urllib.parse import urlparse, parse_qs
 import torch
 from pyt2s.services import stream_elements
 
-# enter key here
+# enter key here before running
 OPENAI_API_KEY=""
 os.environ["OPENAI_API_KEY"] = OPENAI_API_KEY
 

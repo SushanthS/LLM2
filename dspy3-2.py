@@ -5,7 +5,7 @@ from pyt2s.services import stream_elements
 
 QUESTION = "How did Eliud Kipchoge break the sub-2 hour barrier in a full marathon distance? What were the training methods he used to achieve his groundbreaking feat?"
 
-# enter OpenAI Key below
+# enter OpenAI Key below before running
 OPENAI_API_KEY=""
 os.environ["OPENAI_API_KEY"] = OPENAI_API_KEY
 

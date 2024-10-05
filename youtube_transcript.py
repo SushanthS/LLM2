@@ -6,7 +6,7 @@ import dspy
 import os
 import torch
 
-# enter key here
+# enter key here before running
 OPENAI_API_KEY=""
 os.environ["OPENAI_API_KEY"] = OPENAI_API_KEY
 from dspy.datasets.gsm8k import GSM8K, gsm8k_metric
