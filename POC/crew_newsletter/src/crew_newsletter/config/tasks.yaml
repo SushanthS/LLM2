@@ -1,0 +1,72 @@
+research_task:
+  description: >
+    1. Create {num_items} news-worthy items
+    2. Provide items with a title that best suits the news description.
+    3. Provide sources i.e. references to raw items.
+  expected_output: >
+    A list with {num_items} bullet points of the most relevant information about {topic}
+  agent: subject_matter_expert
+
+# reviewing_task:
+#   description: >
+#     1. Cross check against blacklist
+#     2. Validate that none of the news items are related to religion or politics
+#     3. Precision
+#     4. Hallucinatory Check
+#     5. Make sure that each of the m items is truly supported by a subset of the raw n-items. 
+#     6. Recall ( None of the valuable n-items were missed ).
+#     7. Reviewer writes the m items to the database
+#     8. Create newsworthy table ( id, subject, etc. ) 
+
+#   expected_output: >
+#     A fully fledge reports with the mains topics, each with a full section of information.
+#     Formatted as markdown without '```'
+#   agent: reviewer
+
+# # Subject Matter expert will review
+# writing_task:
+#   description: >
+#     1. Will Write a first draft for each of these m items.
+
+#   expected_output: >
+#     A fully fledge reports with the mains topics, each with a full section of information.
+#     Formatted as markdown without '```'
+#   agent: writer
+
+# editing_task:
+#   description: >
+#     1. Write editorial / front cover on the topic.
+#     2. An article that synthesizes the essence of all m items and contextualizes it to the broader subject / field.
+
+#   expected_output: >
+#     A fully fledge reports with the mains topics, each with a full section of information.
+#     Formatted as markdown without '```'
+#   agent: editor
+
+# review_editing_task:
+#   description: >
+#     1. Write editorial / front cover on the topic.
+
+#   expected_output: >
+#     A fully fledge reports with the mains topics, each with a full section of information.
+#     Formatted as markdown without '```'
+#   agent: senior_editor
+
+# coding_task:
+#   description: >
+#     1. Write editorial / front cover on the topic.
+
+#   expected_output: >
+#     A fully fledge reports with the mains topics, each with a full section of information.
+#     Formatted as markdown without '```'
+#   agent: coder
+
+# senior_code_review_task:
+#   description: >
+#     1. Write editorial / front cover on the topic.
+
+#   expected_output: >
+#     A fully fledge reports with the mains topics, each with a full section of information.
+#     Formatted as markdown without '```'
+#   agent: senior_code_reviewer
+
