@@ -1,0 +1,19 @@
+research_task:
+  description:
+  expected_output:
+  agent: researcher
+
+fact_check_task:
+  description:
+  expected_output:
+  agent: expert
+
+article_planning:
+  description:
+  expected_output:
+  agent: planner
+
+article_review:
+  description:
+  expected_output:
+  agent: reviewer
