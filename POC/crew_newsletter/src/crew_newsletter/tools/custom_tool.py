@@ -1,6 +1,7 @@
 from crewai_tools import BaseTool
 from typing import Any, Optional, Type
 from pydantic import ConfigDict, BaseModel, Field
+from youtube_transcript_api import YouTubeTranscriptApi
 import praw
 import os
 import pprint
@@ -135,11 +136,31 @@ class YoutubeTool(BaseTool):
                 'title': video['snippet']['title'],
                 'video_id': video['id']['videoId'],
                 'published_at': video['snippet']['publishedAt'],
-                'url': f"https://www.youtube.com/watch?v={video['id']['videoId']}"
+                'url': (youtube_url := f"https://www.youtube.com/watch?v={video['id']['videoId']}"),
+                'transcript': self.get_youtube_transcript(youtube_url)
             }
             result.append(video_data)
 
         return result
+
+    def get_youtube_transcript(self, url: str) -> str:
+        """
+        Given a YouTube URL, this function returns the transcript of the video as a string.
+        """
+        # Extract the video ID from the URL
+        video_id = url.split("v=")[-1]
+
+        try:
+            # Fetch the transcript
+            transcript_list = YouTubeTranscriptApi.get_transcript(video_id)
+
+            # Combine the transcript into a single string
+            transcript_text = " ".join([item['text'] for item in transcript_list])
+
+            return transcript_text
+
+        except Exception as e:
+            return f"Error: {e}"
 
 class SNIAToolSchema(BaseModel):
     title: str
